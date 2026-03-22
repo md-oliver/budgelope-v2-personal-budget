@@ -1,0 +1,53 @@
+<%- include('partials/header') %>
+<main>
+    <section id="all-transactions">
+        <div class="grid-container">
+            <div id="table-data">
+                <table>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Reference</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                    <% if(locals.data.length) { %>
+                    <% for (let i = 0; i < data.length; i++ ){ %>
+                    <tr>
+                        <td>
+                            <%=data[i].id%>
+                        </td>
+                        <td>
+                            <%=data[i].reference%>
+                        </td>
+                        <td>
+                            <%=data[i].amount%>
+                        </td>
+                        <td>
+                            <%=data[i].date.toLocaleDateString()%>
+                        </td>
+                        <td>
+                            <%=data[i].from.title%>
+                        </td>
+                        <td>
+                            <%=data[i].to.title%>
+                        </td>
+                    </tr>
+                    <%  } } else {%>
+                    <tr>
+                        <td>No data</td>
+                        <td>No data</td>
+                        <td>No data</td>
+                        <td>No data</td>
+                        <td>No data</td>
+                        <td>No data</td>
+                    </tr>
+                    <% }%>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+<%- include('partials/footer') %>
+
