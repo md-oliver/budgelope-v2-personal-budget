@@ -7,7 +7,7 @@ import {
     createTransferTransaction,
 } from "../controllers/envelopeController.js";
 import { body, validationResult } from "express-validator";
-
+import limitRate from "../middleware/limitRate.js";
 const envelopeRouter = Router();
 
 const validateEnvelope = [
@@ -26,7 +26,7 @@ const validateTransfer = [
 envelopeRouter.get("/", getAllEnvelopes);
 
 // Post route to default envelope route
-envelopeRouter.post("/", validateEnvelope, (req, res, next) => {
+envelopeRouter.post("/", validateEnvelope, limitRate, (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -35,18 +35,23 @@ envelopeRouter.post("/", validateEnvelope, (req, res, next) => {
 });
 
 // Make a transfer between envelopes
-envelopeRouter.post("/transfer", validateTransfer, (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    createTransferTransaction(req, res, next);
-});
+envelopeRouter.post(
+    "/transfer",
+    validateTransfer,
+    limitRate,
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        createTransferTransaction(req, res, next);
+    },
+);
 
 // Post route for specific envelope by ID, updating the whole envelope
-envelopeRouter.post("/:id", updateEnvelopeById);
+envelopeRouter.post("/:id", limitRate, updateEnvelopeById);
 
 // Remove route for removing a specific envelope id
-envelopeRouter.delete("/:id", deleteById);
+envelopeRouter.delete("/:id", limitRate, deleteById);
 
 export default envelopeRouter;
