@@ -9,11 +9,16 @@ const notValidId = (id) => {
 
 // Verify if the data received for the envelope is correct and valid
 const verifyEnvelopeData = (envelope) => {
-    if (typeof envelope.title !== "string")
-        throw new Error("Title needs to be a string type");
-    if (!isNaN(parseFloat(envelope.budget) && isFinite(envelope.budget))) {
-        envelope.budget = Number(envelope.budget);
-    } else throw new Error("The budget needs to be a number type");
+    if (typeof envelope.title !== "string" || !envelope.title.trim()) {
+        throw new Error("Title must be a non-empty string");
+    }
+    if (envelope.title.length > 100) {
+        throw new Error("Title must be 100 characters or less");
+    }
+
+    if (typeof envelope.budget !== "number" || envelope.budget < 0) {
+        throw new Error("Budget must be a non-negative number");
+    }
 
     return true;
 };
@@ -171,8 +176,7 @@ export const createTransferTransaction = async (req, res, next) => {
         if (withdrawId === transferId) {
             return res.status(400).send({
                 status: "Failed",
-                message:
-                    "Cannot make a transfer to the same as the destination",
+                message: "Cannot make a transfer to the same envelope",
                 data: null,
             });
         }
@@ -188,13 +192,13 @@ export const createTransferTransaction = async (req, res, next) => {
     if (!sourceEnvelope || !destinationEnvelope) {
         return next(
             new HTTPError(
-                "Unable to find any envleopes with the provided ID's",
+                "Unable to find envelopes with the provided IDs",
                 404,
             ),
         );
     }
 
-    const transactionAmount = parseFloat(amount);
+    const transactionAmount = amount;
     let withdrawelBudget = sourceEnvelope.budget;
     let transferBudget = destinationEnvelope.budget;
 
@@ -235,7 +239,7 @@ export const createTransferTransaction = async (req, res, next) => {
     } else {
         return res.status(500).send({
             status: "Failed",
-            message: "Unable to make transacton: Insufficient funds",
+            message: "Unable to make transaction: Insufficient funds",
         });
     }
 
