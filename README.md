@@ -24,6 +24,10 @@ An application for creating and managing a personal budget, based on the Envelop
 
 - Create a MongoDB database and obtain your `MongoDB URI` - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
 
+## Rate Limit
+
+- Please not this is test project, and not intended for production usage. There is a rate limit set to a total of 25 requests / 30 min accross all routes. This should be sufficient for personal use and testing purposes.
+
 ### Env Variables
 
 Rename the `.env.example` file to `.env` and add the following
