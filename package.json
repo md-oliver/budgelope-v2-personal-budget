@@ -6,7 +6,7 @@
         "express-rate-limit": "^8.3.1",
         "express-validator": "^7.3.1",
         "method-override": "^3.0.0",
-        "mongoose": "^9.2.4"
+        "mongoose": "^9.3.1"
     },
     "name": "budgelope",
     "version": "1.0.0",
