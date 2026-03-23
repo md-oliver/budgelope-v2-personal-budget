@@ -17,6 +17,8 @@ app.set("view engine", "ejs");
 
 env.config();
 
+app.use(helmet());
+
 app.use(express.static(path.join(__dirname, "public")));
 // Body parsing middleware for json data
 app.use(express.json());
