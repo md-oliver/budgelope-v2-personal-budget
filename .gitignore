@@ -20,7 +20,6 @@ yarn-error.log*
 .env.production.local
 
 # IDE and OS specific files
-.vscode/
 .idea/
 .DS_Store
 Thumbs.db
